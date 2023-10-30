@@ -7,6 +7,9 @@ body {
   background-color: rgb(209, 239, 229, 1);
 }
 
+/* # for styling attribute with id 
+. for styling attribute with class */
+
 #logo {
   display: block;
   width: 100px;
@@ -48,4 +51,30 @@ body {
 .video-player{
     height: 100%;
     width: 100%;
+}
+
+
+/* ----------- ROOM STYLING |  Controls -------*/
+
+#controls-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    column-gap:1.5em;
+    position: fixed;
+    bottom: 20px;
+}
+
+.control-icon{
+    height: 25px;
+    width: 25px;
+    box-shadow: var(--shadow);
+    background-color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#leave-btn{
+    background-color: rgb(244, 238, 124);
 }
