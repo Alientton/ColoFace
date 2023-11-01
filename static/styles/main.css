@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
+
 :root {
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -5,10 +7,13 @@
 
 body {
   background-color: rgb(209, 239, 229, 1);
+  font-family: 'Roboto', sans-serif;
 }
 
 /* # for styling attribute with id 
 . for styling attribute with class */
+
+/* ----------- LOBBY STYLING -------*/
 
 #logo {
   display: block;
@@ -28,7 +33,59 @@ body {
   transform: translate(-50%, -50%);
 }
 
+#welcome-message{
+    text-align: center;
+    margin: 20px;
+}
+
+#welcome-message h1{
+    font-size: 36px
+}
+
+#welcome-message p{
+    font-size: 16px
+}
+
+.form-field {
+    margin: 25px;
+}
+
+.form-field label{
+    margin:16px;
+    line-height: 1.7 em;
+}  
+
+.form-field input{
+    width: 100%;
+    border: 2px solid rgba(205, 209, 241, 1);
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form-field input[type='submit']{
+    background-color: rgb(75, 93, 219, 1);
+    border:none;
+    color: #ffffff;
+}
+
+@media screen and (max-width:450px){
+    #form-container{
+        width: 95%;
+    }
+
+    #welcome-message h1{
+        font-size: 24px;
+    }
+}
+
 /* ----------- ROOM STYLING -------*/
+#room-name-wrapper{
+    text-align:center;
+    font-size:18px;
+}
+
+
 #video-streams {
   display: flex;
   flex-wrap: wrap;
@@ -46,6 +103,7 @@ body {
   border-radius: 5px;
   margin: 2px;
   background-color: rgb(255, 255, 255);
+  position: relative;
 }
 
 .video-player{
@@ -53,6 +111,28 @@ body {
     width: 100%;
 }
 
+.video-player > *{
+    border-radius: 4px;
+}
+
+.username-wrapper{
+    position:absolute;
+    top:10px;
+    left:10px;
+    z-index:9999;
+    background-color: rgba(0,0,0,0.3);
+    padding: 10px;
+    border-radius:5px;
+    font-size: 14px;
+    color: #fff;
+}
+
+@media screen and (max-width: 1650px) {
+    .video-container{
+        flex-basis: 300px;
+        min-height: 200px;
+    }
+}
 
 /* ----------- ROOM STYLING |  Controls -------*/
 

@@ -1,7 +1,9 @@
 const APP_ID = "520eaf2903ea4b109d6068c49900ece9"
-const CHANNEL = "main"
-const TOKEN = "007eJxTYPB9cOzJRe1JDd8Dy/c2cX73t9evsqp+XJc987me/31ziRcKDKZGBqmJaUaWBsapiSZJhgaWKWYGZhbJJpaWBgapyamW54/bpTYEMjLcNJvLyMgAgSA+C0NuYmYeAwMAtSUgtA=="
-let UID
+const CHANNEL = sessionStorage.getItem('room')
+const TOKEN = sessionStorage.getItem('token')
+let UID = sessionStorage.getItem('UID')
+
+let NAME = sessionStorage.getItem('name')
 
 const client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
 
@@ -9,17 +11,30 @@ let localTracks = []
 let remoteUsers = {}
 
 let joinAndDisplayLocalStream = async () => {
+    document.getElementById('room-name').innerText = CHANNEL
+
+
     client.on('user-published', handleUserJoined)
     client.on('user-left', handleUserLeft)
 
 
-    UID = await client.join(APP_ID, CHANNEL, TOKEN, null)
+
+    try{
+        await client.join(APP_ID, CHANNEL, TOKEN, UID)
+    }catch(error){
+        console.error(error)
+        window.open('/', '_self')
+    }
+
+    // await client.join(APP_ID, CHANNEL, TOKEN, UID)
 
     // get user's audio and video track
     localTracks = await AgoraRTC.createMicrophoneAndCameraTracks()
 
+    let member = await createMember()
+
     let player = `<div class="video-container" id="user-container-${UID}">
-                <div class="username-wrapper"><span class="user-name">My Name</span></div>
+                <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                 <div class="video-player" id="user-${UID}"></div>
                 </div>`
     //It takes an HTML element with the id 'video-streams' and 
@@ -94,6 +109,19 @@ let toogleMic = async(e) =>{
         await localTracks[0].setMuted(true)
         e.target.style.backgroundColor = 'rgb(255, 80, 80, 1)'
     }
+}
+
+let createMember = async () => {
+    let response = await fetch('/create_member/', {
+        method: 'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({'name': NAME, 'room_name': CHANNEL, 'UID':UID})
+    })
+
+    let member = await response.json()
+    return member
 }
 
 
