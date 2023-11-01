@@ -13,7 +13,6 @@ let remoteUsers = {}
 let joinAndDisplayLocalStream = async () => {
     document.getElementById('room-name').innerText = CHANNEL
 
-
     client.on('user-published', handleUserJoined)
     client.on('user-left', handleUserLeft)
 
@@ -55,18 +54,20 @@ let handleUserJoined = async (user, mediaType) => {
 
     if(mediaType === 'video'){
         // make sure the user's video player doesn't already exist within our dom
-        let player = document.getElementById(`user-contianer-${user.uid}`)
-        if(player != null){
-            player.remove()
-        }
+        let player = document.getElementById(`user-container-${user.uid}`)
+        if (player === null){
 
-        player = `<div class="video-container" id="user-container-${user.uid}">
-                <div class="username-wrapper"><span class="user-name">My Name</span></div>
+            let member = await getMember(user)
+
+            player = `<div class="video-container" id="user-container-${user.uid}">
+                <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                 <div class="video-player" id="user-${user.uid}"></div>
                 </div>`
-        //It takes an HTML element with the id 'video-streams' and 
-        // appends the HTML content stored in the player variable to the end of that element.
-        document.getElementById('video-streams').insertAdjacentHTML('beforeend', player)
+            //It takes an HTML element with the id 'video-streams' and 
+            // appends the HTML content stored in the player variable to the end of that element.
+            document.getElementById('video-streams').insertAdjacentHTML('beforeend', player)
+
+        }
         user.videoTrack.play(`user-${user.uid}`)
 
     }
@@ -101,7 +102,7 @@ let toogleCamera = async(e) => {
     }
 }
 
-let toogleMic = async(e) =>{
+let toogleMic = async(e) => {
     if (localTracks[0].muted){
         await localTracks[0].setMuted(false)
         e.target.style.backgroundColor = '#fff'
@@ -121,9 +122,14 @@ let createMember = async () => {
     })
 
     let member = await response.json()
-    return member
+    return member 
 }
 
+let getMember = async(user) => {
+    let response = await fetch(`/get_member/?UID=${user.uid}&room_name=${CHANNEL}`)
+    let member = await response.json()
+    return member
+}
 
 joinAndDisplayLocalStream()
 document.getElementById('leave-btn').addEventListener('click', leaveAndRemoveLocalStream)

@@ -46,6 +46,27 @@ body {
     font-size: 16px
 }
 
+#github-link {
+    position: absolute;
+    bottom:0px;
+    right: 0px;
+    text-decoration: none;
+    
+}
+
+#github-logo{
+    display: inline;
+    width: 25px;
+    height: 25px;
+    position: relative;
+}
+
+#author{
+    display: inline;
+    color: #000000;
+    
+}
+
 .form-field {
     margin: 25px;
 }
