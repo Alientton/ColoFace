@@ -22,15 +22,16 @@
             <input type="submit" value="Join Stream"/> 
         </div>
 
+        <div class="form-field">
+          <a id="github-link" href="https://github.com/Alientton/ColoFace">
+            <p id="author">Created By Anton Yang</p>
+            <img id="github-logo" src="{% static 'images/github-mark.png' %}" alt="github"/>
+          </a>
+        </div>
+
     </form>
   </section>
 
-  <a id="github-link" href="https://github.com/Alientton/ColoFace">
-    <p id="author">Created By Anton Yang</p>
-    <img id="github-logo" src="{% static 'images/github-mark.png' %}" alt="github"/>
-  </a>
-
-  
 </main>
 
 <script type="text/javascript">
@@ -42,18 +43,24 @@
         let room = e.target.room.value.toUpperCase()
         let name = e.target.username.value
 
-        let response = await fetch(`/get_token/?channel=${room}`)
-        let data = await response.json()
+        if(room == "" || name == ""){
+          alert("Please both enter channel name and your name.");
+        }else{
+          let response = await fetch(`/get_token/?channel=${room}`)
+          let data = await response.json()
+          
+          let UID = data.uid
+          let token = data.token
+
+          sessionStorage.setItem('UID', UID)
+          sessionStorage.setItem('token', token)
+          sessionStorage.setItem('room', room)
+          sessionStorage.setItem('name', name)
+
+          window.open('/room/', '_self')
+        }
+
         
-        let UID = data.uid
-        let token = data.token
-
-        sessionStorage.setItem('UID', UID)
-        sessionStorage.setItem('token', token)
-        sessionStorage.setItem('room', room)
-        sessionStorage.setItem('name', name)
-
-        window.open('/room/', '_self')
     }
 
     form.addEventListener('submit', handleSubmit)
